@@ -19,11 +19,14 @@ app = FastAPI()
 
 @app.post("/chat", response_model=ChatResponse)
 async def chat_handler(req: ChatRequest):
+ 
     me = Person()
+    session_id = req.session_id
     if req.is_end:
         me.email(in_memory_chat_history[session_id])
-
-    session_id = req.session_id
+        if not in_memory_chat_history[session_id]["question"]:
+            me.send_email()
+   
     if not session_id: 
         session_id = str(uuid.uuid4())
         in_memory_chat_history[session_id] = session_data

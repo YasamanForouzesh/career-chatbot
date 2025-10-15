@@ -1,7 +1,4 @@
 from dotenv import load_dotenv
-import smtplib
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
 import os
 import json
 import datetime
@@ -18,35 +15,9 @@ session_data = {
     "user_name": ""
 }
 def record_unkown_question(question, name="Name Not provided", email="not provide",  session_id=""):
-    # msg = MIMEMultipart("alternative")
-
-    # msg["From"] = sender_email
-    # msg["To"] = myself
-    # msg["Subject"] = "Follow up question from your career chatbot"
-    # text = f"Hi Yasaman, \n question came up up from conversation with {name}. The question was {question}. \n here is user's email: {email}"
-    # msg.attach(MIMEText(text, "plain"))
-    
-    # try:
-    #     with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
-    #         server.set_debuglevel(1)  # prints SMTP conversation to stdout for debugging
-    #         server.login(sender_email, password)
-    #         # sendmail returns a dict of failures; empty dict means success
-    #         failures = server.sendmail(sender_email, [myself], msg.as_string())
-    # except smtplib.SMTPAuthenticationError as e:
-    #     return {"ok": False, "error": f"SMTP auth failed: {e}"}
-    # except smtplib.SMTPException as e:
-    #     return {"ok": False, "error": f"SMTP error: {e}"}
-    # except Exception as e:
-    #     return {"ok": False, "error": f"Unexpected error: {e}"}
-    # print(email,name,notes)
-    # if failures:
-    #     print(failures)
-    #     return {"ok": False, "error": f"Failed recipients: {failures}"}
-
     in_memory_chat_history[session_id]["email"] = email
     in_memory_chat_history[session_id]["name"] = name
     in_memory_chat_history[session_id]["questions"].append(question)
-
     return {"recorded":"ok"}
 
 def store_email(email,session_id=""):
