@@ -73,6 +73,14 @@ TO_EMAIL=me@example.com
 SMTP_USERNAME=<mailjet_api_key>
 SMTP_PASSWORD=<mailjet_secret_key>
 ```
+
+## 📄 Important Note: Résumé & Summary Files
+
+⚠️ Your résumé (`resume.pdf`) and summary (`summary.json` or `summary.txt`) **are not included in the repository** because they are listed in `.gitignore`.
+
+To make the chatbot work properly, you must add your own files manually:
+
+
 🌐 Live Demo
 
 🔗 https://portfolio.brightflowtools.com
