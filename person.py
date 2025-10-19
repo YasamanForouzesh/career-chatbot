@@ -4,17 +4,15 @@ from openai import OpenAI
 from pypdf import PdfReader
 import os
 import app_tools
-import json
 from pydantic import BaseModel
-import smtplib
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
+from email_handler import EmailHandler
 class validation(BaseModel):
     is_acceptable: bool
     feedback: str
 
 class emailResp(BaseModel):
-    body: str
+    text_body: str
+    html_body: str
     subject: str
 class Person:
 
@@ -34,18 +32,23 @@ class Person:
             text = page.extract_text()
             if text: 
                 self.resume += text
+        
+        with open("summary.txt", "r", encoding="utf-8") as f:
+            self.summary = f.read()
 
     def system_chat_promt(self): 
         system_prompt = f"You are acting as {self.name}. You are answering questions on {self.name}'s website, \
         particularly questions related to {self.name}'s career, background, skills and experience. \
         Your responsibility is to represent {self.name} for interactions on the website as faithfully as possible. \
-        You are given a summary of {self.name}'s background and LinkedIn profile which you can use to answer questions. \
+        You are given a summary of {self.name}'s background and LinkedIn profile and personal information which you can use to answer questions. \
         Be professional and engaging, as if talking to a potential client or future employer who came across the website. \
         If you don't know the answer to any question, use your record_unkown_question tool to record the question that you couldn't answer, even if it's about something trivial or unrelated to career. \
         If the user is engaging in discussion, try to steer them towards getting in touch via email; ask for their email and name and record it using your store_email tool."\
-        "If they already provided their name or email do not aks them again . always check the history."
+        "If they already provided their name or email do not aks them again . always check the history."\
+        "make sure at least one time ask user to provide their email and name if they provided do not ask them again."\
+        "make sure after providing their email inform them that email might go to their spam."
 
-        system_prompt += f"\n\n ## Resume :\n{self.resume}\n\n"
+        system_prompt += f"\n\n ## Resume :\n{self.resume}\n\n ## Summary: \n {self.summary}"
         system_prompt += f"With this context, please chat with the user, always staying in character as {self.name}."
         return system_prompt
 
@@ -60,6 +63,8 @@ class Person:
             - Keep the email concise (2-4 short paragraphs)
             - If any quistions were asked tell them {self.name} will email them the answer and don't answer the question.
             - If the they provided their name start the email by their name like Hello Dear ##name
+            - Anti-spam: Avoid shouty caps, excessive punctuation, pushy sales language, or unnecessary links. Keep language polite and natural.
+            - Make sure create text and html version for the body to have look clean and porfessional
 
             Tone guidelines:
             - Professional but approachable (like a friendly colleague, not a robot)
@@ -128,40 +133,9 @@ class Person:
         if not evaluation.is_acceptable:
             reReply = self.rerun(reply=reply,history=sessiondata["history"],feedback=evaluation.feedback)
             resp = reReply
-        self.send_email(sessiondata=sessiondata,reply=resp)
+        email =EmailHandler()
+        email.send_email(sessiondata=sessiondata,reply=resp)
 
 
-    def send_email(self,sessiondata,reply=""):
-        msg = MIMEMultipart("alternative")
-        msg["From"] = self.emailFrom
-        if  reply:
-            email = sessiondata["email"]
-        else:
-            email = os.getenv("TO_EMAIL")
-
-        msg["To"] = email
-        if not reply:
-            msg["Subject"] = "follow up"
-            body = f"{sessiondata["name"]} reach out to you and had this questions {sessiondata["questions"]} \n and this what we chat {sessiondata["history"]},here is email {sessiondata["email"]}"
-            msg.attach(MIMEText(body, "plain"))
-
-        else:
-            msg["Subject"] = reply.subject
-            msg.attach(MIMEText(reply.body, "plain"))
-        try:
-            with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
-                server.set_debuglevel(1)  # prints SMTP conversation to stdout for debugging
-                server.login(self.emailFrom, self.emailPassword)
-                # sendmail returns a dict of failures; empty dict means success
-                failures = server.sendmail(self.emailFrom, [email], msg.as_string())
-        except smtplib.SMTPAuthenticationError as e:
-            return {"ok": False, "error": f"SMTP auth failed: {e}"}
-        except smtplib.SMTPException as e:
-            return {"ok": False, "error": f"SMTP error: {e}"}
-        except Exception as e:
-            return {"ok": False, "error": f"Unexpected error: {e}"}
-        if failures:
-            print(failures)
-            return {"ok": False, "error": f"Failed recipients: {failures}"}
         
   

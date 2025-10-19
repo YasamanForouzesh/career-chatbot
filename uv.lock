@@ -117,6 +117,9 @@ dependencies = [
     { name = "dotenv" },
     { name = "fastapi" },
     { name = "gradio" },
+    { name = "load-dotenv" },
+    { name = "mailjet" },
+    { name = "mailjet-rest" },
     { name = "openai" },
     { name = "pydantic" },
     { name = "pypdf" },
@@ -129,6 +132,9 @@ requires-dist = [
     { name = "dotenv", specifier = ">=0.9.9" },
     { name = "fastapi", specifier = ">=0.119.0" },
     { name = "gradio", specifier = ">=5.49.1" },
+    { name = "load-dotenv", specifier = ">=0.1.0" },
+    { name = "mailjet", specifier = ">=1.4.1" },
+    { name = "mailjet-rest", specifier = ">=1.5.1" },
     { name = "openai", specifier = ">=2.3.0" },
     { name = "pydantic", specifier = ">=2.11.10" },
     { name = "pypdf", specifier = ">=6.1.1" },
@@ -450,6 +456,36 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/90/33/396083357d51d7ff0f9805852c288af47480d30dd31d8abc74909b020761/jiter-0.11.0-cp314-cp314-win32.whl", hash = "sha256:c2d13ba7567ca8799f17c76ed56b1d49be30df996eb7fa33e46b62800562a5e2", size = 205802, upload-time = "2025-09-15T09:20:17.661Z" },
     { url = "https://files.pythonhosted.org/packages/e7/ab/eb06ca556b2551d41de7d03bf2ee24285fa3d0c58c5f8d95c64c9c3281b1/jiter-0.11.0-cp314-cp314t-macosx_11_0_arm64.whl", hash = "sha256:fb4790497369d134a07fc763cc88888c46f734abdd66f9fdf7865038bf3a8f40", size = 313405, upload-time = "2025-09-15T09:20:18.918Z" },
     { url = "https://files.pythonhosted.org/packages/af/22/7ab7b4ec3a1c1f03aef376af11d23b05abcca3fb31fbca1e7557053b1ba2/jiter-0.11.0-cp314-cp314t-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:6e2bbf24f16ba5ad4441a9845e40e4ea0cb9eed00e76ba94050664ef53ef4406", size = 347102, upload-time = "2025-09-15T09:20:20.16Z" },
+]
+
+[[package]]
+name = "load-dotenv"
+version = "0.1.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "python-dotenv" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/d7/95/055d123dde74bd54b99b27a3c2d8c6e218f544e0bd437480f61ccf85a07f/load-dotenv-0.1.0.tar.gz", hash = "sha256:bbe5f40072d4a61eadca66de6c222df5a2d935d6d41b703be1ff75396f635145", size = 6404, upload-time = "2022-09-02T19:55:01.349Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/14/2e/268a528dfa1f76999435634b0453fdd917ea878a818a6d5981632f7acffb/load_dotenv-0.1.0-py3-none-any.whl", hash = "sha256:614803f720153fb8a5f97124a72aaa3930a67aa5547cbe8603d01ea7f9ac1adf", size = 7175, upload-time = "2022-09-02T19:54:59.85Z" },
+]
+
+[[package]]
+name = "mailjet"
+version = "1.4.1"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/39/77/a678087c632014668b8902e3f822b9ad392bef9434cc13d0cb2abf4558c0/mailjet-1.4.1.tar.gz", hash = "sha256:8ecb23ea3cfb0bc52ddc0678cfed7f36eab4904c4c21ddf8d0f94125bcac7e71", size = 10653, upload-time = "2016-03-02T08:48:03.394Z" }
+
+[[package]]
+name = "mailjet-rest"
+version = "1.5.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "requests" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/41/76/047f63be44f14bd9d84153bf355d8cfb32571052f0bf386fb45bed9bee1f/mailjet_rest-1.5.1.tar.gz", hash = "sha256:8705efb05ca2faab4be93c490296855182ca08a2e7deb86bf25c8a38f39804d9", size = 42445, upload-time = "2025-07-14T15:51:18.464Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/57/c3/571e92ccb6edcda528f14864b04111adc2e19ab500f12a4ec4628176bc3e/mailjet_rest-1.5.1-py3-none-any.whl", hash = "sha256:4473ac614142e1bbd50f18c485cff4ec032f7d864cf1c9ac8d675830da579288", size = 28664, upload-time = "2025-07-14T15:51:17.119Z" },
 ]
 
 [[package]]

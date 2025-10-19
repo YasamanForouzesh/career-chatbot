@@ -5,7 +5,7 @@ import uuid
 from app_tools import chat, in_memory_chat_history, session_data
 import uvicorn
 from fastapi.middleware.cors import CORSMiddleware
-
+from email_handler import EmailHandler
 
 class ChatRequest(BaseModel):
     session_id: str | None = None
@@ -31,14 +31,10 @@ async def chat_handler(req: ChatRequest):
     me = Person()
     session_id = req.session_id
     if req.is_end:
-        print(in_memory_chat_history[session_id]["questions"])
-        print( (not in_memory_chat_history[session_id]["email"]) or in_memory_chat_history[session_id]["questions"])
-        if (not in_memory_chat_history[session_id]["email"]) or in_memory_chat_history[session_id]["questions"]:
-            me.send_email(in_memory_chat_history[session_id])
-
+        email = EmailHandler()           
+        email.send_email(in_memory_chat_history[session_id])
         if in_memory_chat_history[session_id]["email"]:
             me.email(in_memory_chat_history[session_id])
-
    
     if not session_id: 
         session_id = str(uuid.uuid4())
